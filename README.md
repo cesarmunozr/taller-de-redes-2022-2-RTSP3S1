@@ -139,6 +139,9 @@ s3.connect ((ip_server, 8554))
 ss3 = StreamSocket(s3, Raw)
 ss3.sr1(Raw("TEARDOWN rtsp://172.17.0.5:8554/mystream/ RTSP/1.0\r\nCSeq: 6\r\nUser-Agent: 12345678\r\nSession: Lavf58.45.1001\r\n\r\n"))``
 
+## Video tarea 3
+
+https://youtu.be/czD6V_Y2HOM
 
 ## Agradecimientos
 
