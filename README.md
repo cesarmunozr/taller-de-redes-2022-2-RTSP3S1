@@ -67,6 +67,79 @@ Para el caso de cliente:
 10) Una vez obtenida la dirección IP, la reemplazamos en el siguiente comando, para así entablar una conexión entre el cliente y el servidor. Este comando debe ser ejecutado en la consola en la cual se realizó el paso 7:
 
     ``:/# ffmpeg -rtsp_transport tcp -i rtsp://[IP_DOCKER_SERVER]:8554/mystream -c copy output.mp4``
+    
+    
+      ### Tarea 3
+
+## Buildear nuevos dockers files (server-arp, cliente-arp y scapy)
+
+1)
+Iniciar docker Server_ARP
+sudo docker run -it --rm server-arp
+
+Iniciar docker Cliente_ARP
+sudo docker run -it --rm cliente-arp
+
+Iniciar docker Scapy
+sudo docker run -it --rm scapy
+
+3) 
+
+Abrimos Wireshark
+
+4) 
+
+Hacemos la conexión de cliente y server
+
+
+ffmpeg -rtsp_transport tcp -i rtsp://IP:8554/mystream -c copy output.mp4
+
+
+5) Fuzzing
+
+En el docker de scapy, creamos la variable ip_server con la IP asignada para el docker server
+
+ip_server ="172.17.0.x"
+
+I)
+
+f1 = socket.socket()
+f1.connect ((ip_server, 8554))
+fuzz1 = StreamSocket(f1,Raw)
+fuzz1.sr1(Raw("DESCRIBE rtsp://172.17.0.5:8554/mystream RTSP/1.0\r\nAccept: application/sdp\r\nCSeq: 2\r\nUser-Agent: 사회과학원어학연구소\r\n\r\n"))
+
+
+II)
+
+f2 = socket.socket()
+f2.connect ((ip_server, 8554))
+fuzz2 = StreamSocket(f2,Raw)
+fuzz2.sr1(Raw("PLAY rtsp://172.17.0.2:8554/mystream/ RTSP/1.0\r\nRange: npt=0.000-\r\nCSeq: 98791982739187293719821973\r\nUser-Agent: Lavf58.45.100\r\nSession: 12345678\r\n\r\n"))
+
+
+6) Modificaciones de campos especificas
+
+I)
+
+ip_server = "172.17.0.X"
+
+s1 = socket.socket()
+s1.connect ((ip_server, 8554))
+ss1 = StreamSocket(s1, Raw)
+ss1.sr1(Raw("PLAY rtsp://172.17.0.2:8554/mystream/ RTSP/1.0\r\nRange: npt=0.000-\r\nCSeq: 4\r\nUser-Agent: Lavf58.45.100\r\nSession: 11111111\r\n\r\n"))
+
+II)
+s2 = socket.socket()
+s2.connect ((ip_server, 8554))
+ss2 = StreamSocket(s2, Raw)
+ss2.sr1(Raw("DESCRIBE rtsp://172.17.0.5:8554/mystream RTSP/1.0\r\nAccept: application/sdp\r\nCSeq: 2\r\nUser-Agent: 12345678\r\n\r\n"))
+
+III)
+s3 = socket.socket()
+s3.connect ((ip_server, 8554))
+ss3 = StreamSocket(s3, Raw)
+ss3.sr1(Raw("TEARDOWN rtsp://172.17.0.5:8554/mystream/ RTSP/1.0\r\nCSeq: 6\r\nUser-Agent: 12345678\r\nSession: Lavf58.45.1001\r\n\r\n"))
+
 
 ## Agradecimientos
 
