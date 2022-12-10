@@ -143,6 +143,10 @@ ss3.sr1(Raw("TEARDOWN rtsp://172.17.0.5:8554/mystream/ RTSP/1.0\r\nCSeq: 6\r\nUs
 
 https://youtu.be/czD6V_Y2HOM
 
+## Video tarea 4
+
+https://youtu.be/dOYLjwOQXYY
+
 ## Agradecimientos
 
 Esta documentación fue provista por ayudantes de la Universidad Diego Portales:
